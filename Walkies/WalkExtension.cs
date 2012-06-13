@@ -22,18 +22,26 @@ namespace Walkies
 
         public static IEnumerable<object> Walk(this object parent, IEnumerable<string> path)
         {
+            yield return parent;
+            var current = parent;
             foreach (var fragment in path)
             {
-                var child = Rules.Select(r => r(parent, fragment)).FirstOrDefault(v => v != null);
-                if (child == null)
-                {
-                    yield return null;
-                    continue;
-                }
-                child.SetParent(parent);
-                child.SetName(fragment);
-                yield return child;
+                current = current.Child(fragment);
+                yield return current;
             }
+        }
+
+        public static object Child(this object parent, string fragment)
+        {
+            if (parent == null) return null;
+            var child = Rules.Select(r => r(parent, fragment)).FirstOrDefault(v => v != null);
+            if (child == null)
+            {
+                return null;
+            }
+            child.SetParent(parent);
+            child.SetName(fragment);
+            return child;
         }
     }
 }
