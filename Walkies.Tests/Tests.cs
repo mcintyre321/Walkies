@@ -16,6 +16,15 @@ namespace Walkies.Tests
         }
 
         [Test]
+        public void NamedChildAttributeTest()
+        {
+            var a = new A();
+            var b = a.Walk("BOne").Last();
+            Assert.AreEqual(a.B1, b);
+        }
+
+
+        [Test]
         public void GetChildTest()
         {
             var a = new A();

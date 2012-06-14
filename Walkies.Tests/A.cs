@@ -14,6 +14,9 @@ namespace Walkies.Tests
         [Child]
         public object B { get; set; }
 
+        [Child("BOne")]
+        public object B1 { get; set; }
+
         public object C { get; set; }
 
         public object D { get; set; }
