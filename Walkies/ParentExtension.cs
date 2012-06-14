@@ -19,10 +19,10 @@ namespace Walkies
             return obj;
         }
 
-        public static T GetParent<T>(this T obj)
+        public static object GetParent(this object obj)
         {
             var value = parents.GetValue(obj, k => null);
-            return value == null ? default(T) : (T) value;
+            return value;
         }
 
 
