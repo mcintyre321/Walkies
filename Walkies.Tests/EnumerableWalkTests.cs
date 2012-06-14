@@ -11,9 +11,9 @@ namespace Walkies.Tests
         {
             public TestSubject()
             {
-                B = new object();
-                C = new object();
-                D = new object();
+                B = new object().SetFragment("0");
+                C = new object().SetFragment("1");
+                D = new object().SetFragment("2");
             }
 
             public object B { get; set; }

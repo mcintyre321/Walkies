@@ -13,7 +13,7 @@ namespace Walkies
             GetChild.Rule,
             GetFromChildren.Rule,
             ChildAttribute.Rule,
-            IndexEnumerable.Rule,
+            ScanEnumerable.Rule,
             Indexable.Rule
         };
  

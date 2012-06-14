@@ -3,15 +3,14 @@ using System.Linq;
 
 namespace Walkies
 {
-    public class IndexEnumerable
+    public class ScanEnumerable
     {
         public static object Rule(object root, string fragment)
         {
             var enumerable = root as IEnumerable<object>;
-            var i = -1;
-            if (enumerable != null && enumerable.GetWalkable() && int.TryParse(fragment, out i))
+            if (enumerable != null && enumerable.GetWalkable())
             {
-                return enumerable.Skip(i).FirstOrDefault();
+                return enumerable.FirstOrDefault(i => i.GetFragment() == fragment);
             }
             return null;
         }
