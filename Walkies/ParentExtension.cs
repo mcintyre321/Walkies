@@ -13,6 +13,12 @@ namespace Walkies
             return obj;
         }
 
+        public static T SetChild<T>(this T obj, object child)
+        {
+            child.SetParent(obj);
+            return obj;
+        }
+
         public static T GetParent<T>(this T obj)
         {
             var value = parents.GetValue(obj, k => null);
