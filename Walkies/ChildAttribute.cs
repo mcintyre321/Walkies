@@ -8,11 +8,12 @@ namespace Walkies
 {
     public class ChildAttribute : Attribute
     {
-        public string Name { get; set; }
+        public bool Walkable { get; set; }
+        private readonly string _name;
         public ChildAttribute(){}
         public ChildAttribute(string name)
         {
-            Name = name;
+            _name = name;
         }
 
         private delegate object Getter(object target);
@@ -44,7 +45,14 @@ namespace Walkies
                 where att != null
                 let getMethod = pi.GetGetMethod()
                 where getMethod != null
-                select Tuple.Create(att.Name ?? pi.Name, new Getter(obj => getMethod.Invoke(obj, null)));
+                select Tuple.Create(att._name ?? pi.Name, new Getter(obj => Invoke(obj, getMethod, att.Walkable)));
+        }
+
+        private static object Invoke(object obj, MethodInfo getMethod, bool walkable)
+        {
+            var result = getMethod.Invoke(obj, null);
+            if (result != null && walkable) result.SetWalkable(true);
+            return result;
         }
     }
 }

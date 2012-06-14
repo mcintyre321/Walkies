@@ -44,9 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="A.cs" />
-    <Compile Include="Tests.cs" />
+    <Compile Include="IndexableWalkTests.cs" />
+    <Compile Include="EnumerableWalkTests.cs" />
+    <Compile Include="SimpleWalkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TraversalTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

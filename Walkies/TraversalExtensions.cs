@@ -21,9 +21,13 @@ namespace Walkies
             return o.AncestorsAndSelf().Skip(1);
         }
 
-        public static IEnumerable<string> Path(this object descendant)
+        public static IEnumerable<string> WalkPath(this object descendant)
         {
             return descendant.AncestorsAndSelf().Reverse().Skip(1).Select(o => o.GetName());
+        }
+        public static string WalkPath(this object descendant, string separator)
+        {
+            return string.Join(separator, descendant.AncestorsAndSelf().Reverse().Skip(1).Select(o => o.GetName()));
         }
 
         public static IEnumerable<T> Each<T>(IEnumerable<T> items, Action<T> action)

@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Walkies.Tests
 {
-    public class Tests
+    public class SimpleWalkTests
     {
         [Test]
         public void ChildAttributeTest()

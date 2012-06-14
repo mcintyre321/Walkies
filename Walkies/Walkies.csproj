@@ -41,6 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChildAttribute.cs" />
+    <Compile Include="Indexable.cs" />
+    <Compile Include="WalkableExtension.cs" />
+    <Compile Include="IndexEnumerable.cs" />
     <Compile Include="GetChild.cs" />
     <Compile Include="HasChildren.cs" />
     <Compile Include="NameExtension.cs" />

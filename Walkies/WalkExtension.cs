@@ -12,7 +12,9 @@ namespace Walkies
         {
             GetChild.Rule,
             GetFromChildren.Rule,
-            ChildAttribute.Rule
+            ChildAttribute.Rule,
+            IndexEnumerable.Rule,
+            Indexable.Rule
         };
  
         public static IEnumerable<object> Walk(this object parent, string path)

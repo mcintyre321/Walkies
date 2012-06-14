@@ -30,5 +30,19 @@ namespace Walkies.Tests
         {
             get { yield return D.SetName("d"); }
         }
+
+        [Child]
+        public IEnumerable<object> Objects
+        {
+            get
+            {
+                yield return B;
+                yield return C;
+                yield return D;
+            }
+        }
+
+ 
+
     }
 }
