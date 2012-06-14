@@ -19,7 +19,7 @@ namespace Walkies
  
         public static IEnumerable<object> Walk(this object parent, string path)
         {
-            return Walk(parent, path.Split('/'));
+            return Walk(parent, path.Trim('/').Split(new[]{'/'}, StringSplitOptions.RemoveEmptyEntries));
         }
 
         public static IEnumerable<object> Walk(this object parent, IEnumerable<string> path)
