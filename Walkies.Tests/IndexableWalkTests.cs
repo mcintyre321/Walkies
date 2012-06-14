@@ -49,7 +49,7 @@ namespace Walkies.Tests
             Assert.AreEqual(a.Objects, a.Walk("objects").Last());
 
             Assert.AreEqual(a.B, a.Walk("objects/B").Last());
-            Assert.AreEqual("objects/B", a.B.WalkPath("/"));
+            Assert.AreEqual("objects/B", a.B.WalkedPath("/"));
             
             Assert.AreEqual(a.C, a.Walk("objects/C").Last());
 

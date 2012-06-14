@@ -21,14 +21,19 @@ namespace Walkies
             return o.AncestorsAndSelf().Skip(1);
         }
 
-        public static IEnumerable<string> WalkPath(this object descendant)
+        public static IEnumerable<string> WalkedPath(this object descendant)
         {
-            return descendant.AncestorsAndSelf().Reverse().Skip(1).Select(o => o.GetName());
+            return descendant.Walked().Skip(1).Select(o => o.GetFragment());
         }
-        public static string WalkPath(this object descendant, string separator)
+        public static string WalkedPath(this object descendant, string separator)
         {
-            return string.Join(separator, descendant.AncestorsAndSelf().Reverse().Skip(1).Select(o => o.GetName()));
+            return string.Join(separator, descendant.WalkedPath());
         }
+        public static IEnumerable<object> Walked(this object descendant)
+        {
+            return descendant.AncestorsAndSelf().Reverse();
+        } 
+
 
         public static IEnumerable<T> Each<T>(this IEnumerable<T> items, Action<T> action)
         {

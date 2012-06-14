@@ -15,7 +15,7 @@ namespace Walkies
             var hasChildren = root as IHasChildren;
             if (hasChildren != null)
             {
-                return hasChildren.Children.FirstOrDefault(c => c.GetName() == fragment);
+                return hasChildren.Children.FirstOrDefault(c => c.GetFragment() == fragment);
             }
             return null;
         }

@@ -53,13 +53,13 @@ namespace Walkies.Tests
         {
             var a = new TestSubject();
             var objects = a.Walk("objects").Last();
-            Assert.AreEqual("objects", objects.WalkPath("/"));
+            Assert.AreEqual("objects", objects.WalkedPath("/"));
 
             Assert.AreEqual(a.B, a.Walk("objects/0").Last());
-            Assert.AreEqual("objects/0", a.B.WalkPath("/"));
+            Assert.AreEqual("objects/0", a.B.WalkedPath("/"));
 
             Assert.AreEqual(a.C, a.Walk("objects/1").Last());
-            Assert.AreEqual("objects/1", a.C.WalkPath("/"));
+            Assert.AreEqual("objects/1", a.C.WalkedPath("/"));
             
             Assert.AreEqual(null, a.Walk("objects/5").Last());
 

@@ -46,7 +46,7 @@
     <Compile Include="IndexEnumerable.cs" />
     <Compile Include="GetChild.cs" />
     <Compile Include="HasChildren.cs" />
-    <Compile Include="NameExtension.cs" />
+    <Compile Include="FragmentExtension.cs" />
     <Compile Include="ParentExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TraversalExtensions.cs" />

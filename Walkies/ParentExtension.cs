@@ -5,20 +5,20 @@ namespace Walkies
 {
     public static class PublicParentExtensions
     {
-        public static T SetParent<T>(this T obj, object parent, string name)
+        public static T SetParent<T>(this T obj, object parent, string fragment)
         {
-            obj.SetParent(parent).SetName(name);
+            obj.SetParent(parent).SetFragment(fragment);
             return obj;
         }
 
-        public static T SetParent<T>(this T obj, object parent, Func<T, string> getName)
+        public static T SetParent<T>(this T obj, object parent, Func<T, string> getFragment)
         {
-            return PublicParentExtensions.SetParent(obj, parent, getName(obj));
+            return PublicParentExtensions.SetParent(obj, parent, getFragment(obj));
         }
 
-        public static T SetChild<T>(this T parent, object child, string name)
+        public static T SetChild<T>(this T parent, object child, string fragment)
         {
-            child.SetParent(parent).SetName(name);
+            child.SetParent(parent).SetFragment(fragment);
             return parent;
         }
 

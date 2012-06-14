@@ -28,7 +28,7 @@ namespace Walkies.Tests
 
         public IEnumerable<object> Children
         {
-            get { yield return D.SetName("d"); }
+            get { yield return D.SetFragment("d"); }
         }
 
         [Child]

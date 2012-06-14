@@ -42,7 +42,7 @@ namespace Walkies
                 return null;
             }
             child.SetParent(parent);
-            child.SetName(fragment);
+            child.SetFragment(fragment);
             return child;
         }
     }
