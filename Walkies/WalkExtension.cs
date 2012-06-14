@@ -8,7 +8,7 @@ namespace Walkies
 
     public static class WalkExtension
     {
-        private static List<Func<object, string, object>> Rules = new List<Func<object, string, object>>()
+        public static List<Func<object, string, object>> Rules = new List<Func<object, string, object>>()
         {
             GetChild.Rule,
             GetFromChildren.Rule,
