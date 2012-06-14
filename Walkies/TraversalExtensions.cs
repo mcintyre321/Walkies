@@ -30,7 +30,7 @@ namespace Walkies
             return string.Join(separator, descendant.AncestorsAndSelf().Reverse().Skip(1).Select(o => o.GetName()));
         }
 
-        public static IEnumerable<T> Each<T>(IEnumerable<T> items, Action<T> action)
+        public static IEnumerable<T> Each<T>(this IEnumerable<T> items, Action<T> action)
         {
             foreach (var item in items)
             {
