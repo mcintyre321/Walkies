@@ -10,7 +10,7 @@ namespace Walkies
         public static IEnumerable<object> KnownChildren(this object parent)
         {
             return WalkExtension.GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[] { })
-                .Select(pair => pair.Item1);
+                .Select(pair => pair.Item2);
         }
         public static IEnumerable<object> KnownDescendants(this object parent)
         {
