@@ -26,7 +26,11 @@ namespace Walkies
         }
         public static IEnumerable<Tuple<string, object>> ChildrenRule(object root)
         {
-            return GetLookupDictionary(root).Select(pair => Tuple.Create(pair.Key, pair.Value(root)));
+            if (root.GetWalkable())
+            {
+                return GetLookupDictionary(root).Select(pair => Tuple.Create(pair.Key, pair.Value(root)));
+            }
+            return null;
         }
 
         private static ConcurrentDictionary<string, Getter> GetLookupDictionary(object root)
