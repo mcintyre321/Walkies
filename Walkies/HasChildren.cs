@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,14 +9,14 @@ namespace Walkies
         IEnumerable<object> Children{ get; }
     }
 
-    public class GetFromChildren
+    public class HasChildren
     {
-        public static object Rule(object root, string fragment)
+        public static IEnumerable<Tuple<string, object>> Rule(object root)
         {
             var hasChildren = root as IHasChildren;
             if (hasChildren != null)
             {
-                return hasChildren.Children.FirstOrDefault(c => c.GetFragment() == fragment);
+                return hasChildren.Children.Select(c => Tuple.Create(c.GetFragment(), c));
             }
             return null;
         }

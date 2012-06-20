@@ -13,7 +13,7 @@ namespace Walkies
 
         public static T SetParent<T>(this T obj, object parent, Func<T, string> getFragment)
         {
-            return PublicParentExtensions.SetParent(obj, parent, getFragment(obj));
+            return obj.SetParent(parent, getFragment(obj));
         }
 
         public static T SetChild<T>(this T parent, object child, string fragment)

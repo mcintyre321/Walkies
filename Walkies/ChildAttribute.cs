@@ -20,6 +20,17 @@ namespace Walkies
         static ConcurrentDictionary<Type, ConcurrentDictionary<string, Getter>> lookup = new ConcurrentDictionary<Type,ConcurrentDictionary<string,Getter>>(); 
         public static object Rule(object root, string fragment)
         {
+            var innerLookup = GetLookupDictionary(root);
+            Getter getter = null;
+            return innerLookup.TryGetValue(fragment, out getter) ? getter(root) : null;
+        }
+        public static IEnumerable<Tuple<string, object>> ChildrenRule(object root)
+        {
+            return GetLookupDictionary(root).Select(pair => Tuple.Create(pair.Key, pair.Value(root)));
+        }
+
+        private static ConcurrentDictionary<string, Getter> GetLookupDictionary(object root)
+        {
             var type = root.GetType();
             var innerLookup = lookup.GetOrAdd(type, t =>
             {
@@ -30,10 +41,8 @@ namespace Walkies
                 }
                 return cd;
             });
-            Getter getter = null;
-            return innerLookup.TryGetValue(fragment, out getter) ? getter(root) : null;
+            return innerLookup;
         }
-
 
 
         static IEnumerable<Tuple<string, Getter>> MakeFunc(Type type)

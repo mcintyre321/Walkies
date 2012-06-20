@@ -4,17 +4,35 @@ using System.Linq;
 
 namespace Walkies
 {
+    public delegate IEnumerable<Tuple<string, object>> GetChildren(object parent);
+
     public delegate object GetChildRule(object parent, string fragment);
 
     public static class WalkExtension
     {
-        public static List<Func<object, string, object>> Rules = new List<Func<object, string, object>>()
+        public static List<GetChildRule> Rules = new List<GetChildRule>()
         {
             GetChild.Rule,
-            GetFromChildren.Rule,
-            ChildAttribute.Rule,
+            ScanChildrenEnumerables,
+            ChildAttribute.Rule, 
             ScanEnumerable.Rule,
             Indexable.Rule
+        };
+
+        private static object ScanChildrenEnumerables(object parent, string fragment)
+        {
+            return GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[]{})
+                .Select(pair => new {IsMatch = pair.Item1 == fragment, Pair = pair})
+                .Where(triple => triple.IsMatch)
+                .Select(triple => triple.Pair.Item2)
+                .FirstOrDefault();
+        }
+
+        public static List<GetChildren> GetChildrenRules = new List<GetChildren>()
+        {
+            HasChildren.Rule,
+            ChildAttribute.ChildrenRule,
+            ScanEnumerable.ChildrenRule,
         };
  
         public static IEnumerable<object> Walk(this object parent, string path)

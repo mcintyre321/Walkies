@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,6 +12,16 @@ namespace Walkies
             if (enumerable != null && enumerable.GetWalkable())
             {
                 return enumerable.FirstOrDefault(i => i.GetFragment() == fragment);
+            }
+            return null;
+        }
+
+        public static IEnumerable<Tuple<string, object>> ChildrenRule(object parent)
+        {
+            var enumerable = parent as IEnumerable<object>;
+            if (enumerable != null && enumerable.GetWalkable())
+            {
+                return enumerable.Select(i => Tuple.Create(i.GetFragment(), i));
             }
             return null;
         }

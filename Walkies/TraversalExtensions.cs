@@ -7,6 +7,17 @@ namespace Walkies
 {
     public static class TraversalExtensions
     {
+        public static IEnumerable<object> KnownChildren(this object parent)
+        {
+            return WalkExtension.GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[] { })
+                .Select(pair => pair.Item1);
+        }
+        public static IEnumerable<object> KnownDescendants(this object parent)
+        {
+            return parent.RecurseMany(p => p.KnownChildren());
+        }
+
+
         public static IEnumerable<object> AncestorsAndSelf(this object o)
         {
             do
