@@ -14,6 +14,7 @@ namespace Walkies
                 fragments.Add(obj, fragment);
             };
         }
+
         private static readonly ConditionalWeakTable<object, string> fragments = new ConditionalWeakTable<object, string>();
 
         public static Action<object, string> SetFragmentRule { get; set; }
@@ -23,10 +24,10 @@ namespace Walkies
             return obj;
         }
 
-        public static Func<string, object> GetFragmentRule { get; set; }
+        public static Func<object, string> GetFragmentRule { get; set; }
         public static string GetFragment(this object obj)
         {
-            return fragments.GetValue(obj, c => null);
+            return GetFragmentRule(obj);
         }
 
     }
