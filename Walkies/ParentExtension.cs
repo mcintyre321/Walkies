@@ -38,7 +38,7 @@ namespace Walkies
         }
     }
 
-    internal static class ParentExtension
+    public  static class ParentExtension
     {
         static ParentExtension()
         {
@@ -65,7 +65,7 @@ namespace Walkies
         }
 
         public static Func<object, object> GetParentFunc { get; set; }
-        public static object GetParent(this object obj)
+        internal static object GetParent(this object obj)
         {
              
             return GetParentFunc(obj);
