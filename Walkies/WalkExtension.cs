@@ -59,8 +59,8 @@ namespace Walkies
             {
                 return null;
             }
-            child.SetParent(parent);
-            child.SetFragment(fragment);
+            if (child.GetParent() == null) child.SetParent(parent);
+            if (child.GetFragment() == null) child.SetFragment(fragment);
             return child;
         }
     }
