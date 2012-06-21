@@ -21,11 +21,21 @@ namespace Walkies
 
         private static object ScanChildrenEnumerables(object parent, string fragment)
         {
-            return GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[]{})
-                .Select(pair => new {IsMatch = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Item1, fragment) == 0, Pair = pair})
-                .Where(triple => triple.IsMatch)
-                .Select(triple => triple.Pair.Item2)
-                .FirstOrDefault();
+            if (!parent.GetNotWalkable())
+            {
+                return GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[] {})
+                    .Select(
+                            pair =>
+                            new
+                            {
+                                IsMatch = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Item1, fragment) == 0,
+                                Pair = pair
+                            })
+                    .Where(triple => triple.IsMatch)
+                    .Select(triple => triple.Pair.Item2)
+                    .FirstOrDefault();
+            }
+            return null;
         }
 
         public static List<GetChildren> GetChildrenRules = new List<GetChildren>()

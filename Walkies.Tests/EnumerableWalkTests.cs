@@ -23,16 +23,7 @@ namespace Walkies.Tests
 
             public object D { get; set; }
 
-            [Child(Walkable = true)]
-            public IEnumerable<object> Objects
-            {
-                get
-                {
-                    yield return B;
-                    yield return C;
-                    yield return D;
-                }
-            }
+          
 
             [Child]
             public IEnumerable<object> Objects2
@@ -45,7 +36,16 @@ namespace Walkies.Tests
                 }
             }
 
-
+            [Child(Walkable = true)]
+            public IEnumerable<object> Objects
+            {
+                get
+                {
+                    yield return B;
+                    yield return C;
+                    yield return D;
+                }
+            }
 
         }
         [Test]

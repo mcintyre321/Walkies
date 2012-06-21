@@ -9,7 +9,7 @@ namespace Walkies
         public static object Rule(object root, string fragment)
         {
             var enumerable = root as IEnumerable<object>;
-            if (enumerable != null && enumerable.GetNotWalkable())
+            if (enumerable != null && enumerable.GetNotWalkable() == false)
             {
                 return enumerable.FirstOrDefault(i => i.GetFragment() == fragment);
             }
