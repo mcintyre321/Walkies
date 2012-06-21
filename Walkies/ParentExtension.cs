@@ -5,20 +5,30 @@ namespace Walkies
 {
     public static class PublicParentExtensions
     {
+        public static T SetParent<T>(this T obj, object parent, Func<T, string> getFragment)
+        {
+            return obj.SetParent(() => parent, getFragment(obj));
+        }
+        
         public static T SetParent<T>(this T obj, object parent, string fragment)
         {
-            obj.SetParent(parent).SetFragment(fragment);
+            return obj.SetParent(() => parent).SetFragment(fragment);
+        }
+
+        public static T SetParent<T>(this T obj, Func<object> getParent, string fragment)
+        {
+            obj.SetParent(getParent).SetFragment(fragment);
             return obj;
         }
 
-        public static T SetParent<T>(this T obj, object parent, Func<T, string> getFragment)
+        public static T SetParent<T>(this T obj, Func<object> getParent, Func<T, string> getFragment)
         {
-            return obj.SetParent(parent, getFragment(obj));
+            return obj.SetParent(getParent, getFragment(obj));
         }
 
         public static T SetChild<T>(this T parent, object child, string fragment)
         {
-            child.SetParent(parent).SetFragment(fragment);
+            child.SetParent(() => parent).SetFragment(fragment);
             return parent;
         }
 
@@ -30,26 +40,26 @@ namespace Walkies
 
     internal static class ParentExtension
     {
-        private static readonly ConditionalWeakTable<object, object> parents = new ConditionalWeakTable<object, object>();
+        private static readonly ConditionalWeakTable<object, Func<object>> parents = new ConditionalWeakTable<object, Func<object>>();
 
-
-        internal static T SetParent<T>(this T obj, object parent)
+        internal static T SetParent<T>(this T obj, object parent) { return SetParent(obj, () => parent); }
+        internal static T SetParent<T>(this T obj, Func<object> parent)
         {
             parents.Remove(obj);
-            parents.Add(obj, parent);
+            parents.Add(obj, parent ?? (() => null));
             return obj;
         }
 
         internal static T SetChild<T>(this T obj, object child)
         {
-            child.SetParent(obj);
+            child.SetParent(() => obj);
             return obj;
         }
 
         public static object GetParent(this object obj)
         {
-            var value = parents.GetValue(obj, k => null);
-            return value;
+            var value = parents.GetValue(obj, k => () => null);
+            return value();
         }
     }
 }
