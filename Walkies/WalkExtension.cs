@@ -34,10 +34,10 @@ namespace Walkies
             ChildAttribute.ChildrenRule,
             ScanEnumerable.ChildrenRule,
         };
- 
+
         public static IEnumerable<object> Walk(this object parent, string path)
         {
-            return Walk(parent, path.Trim('/').Split(new[]{'/'}, StringSplitOptions.RemoveEmptyEntries));
+            return Walk(parent, path.Trim('/').Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries));
         }
 
         public static IEnumerable<object> Walk(this object parent, IEnumerable<string> path)
@@ -50,6 +50,28 @@ namespace Walkies
                 yield return current;
             }
         }
+
+        public static object WalkTo (this object parent, string path)
+        {
+            return parent.Walk(path).Last();
+        }
+
+        public static T WalkTo<T>(this object parent, string path)
+        {
+            return (T) parent.Walk(path).Last();
+        }
+
+        public static object WalkTo(this object parent, IEnumerable<string> path)
+        {
+            return parent.Walk(path).Last();
+        }
+
+        public static T WalkTo<T>(this object parent, IEnumerable<string> path)
+        {
+            return (T)parent.Walk(path).Last();
+        }
+
+
 
         public static object Child(this object parent, string fragment)
         {
