@@ -18,7 +18,10 @@ namespace Walkies.Tests
                 C = new object();
                 D = new object();
                 InnerObjects = new Hashtable() { { "B", B }, { "C", C } };
+                InnerObjects2 = new Hashtable() { { "E", B }, { "F", C } };
             }
+
+            public Hashtable InnerObjects2 { get; set; }
 
             public object B { get; set; }
 
@@ -36,16 +39,25 @@ namespace Walkies.Tests
             [Child]
             public Hashtable Objects2
             {
-                get { return InnerObjects; }
+                get { return InnerObjects2; }
             }
 
 
 
         }
         [Test]
+        public void CanWalkWalkableTwice()
+        {
+            var a = new TestSubject();
+            Assert.AreEqual(a.Objects, a.Walk("objects").Last());
+            Assert.AreEqual(a.Objects, a.Walk("objects").Last());
+        }
+
+        [Test]
         public void CanWalkWalkable()
         {
             var a = new TestSubject();
+            Assert.AreEqual(a.Objects, a.Walk("objects").Last());
             Assert.AreEqual(a.Objects, a.Walk("objects").Last());
 
             Assert.AreEqual(a.B, a.Walk("objects/B").Last());
@@ -61,7 +73,7 @@ namespace Walkies.Tests
             Assert.AreEqual(a.Objects2, a.Walk("objects2").Last());
 
             Assert.AreEqual(null, a.Walk("objects2/B").Last());
-            Assert.AreEqual(null, a.Walk("objects2/C").Last());
+            Assert.AreEqual(null, a.Walk("objects2/E").Last());
             Assert.AreEqual(null, a.Walk("objects2/5").Last());
 
         }

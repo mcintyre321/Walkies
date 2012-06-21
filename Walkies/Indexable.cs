@@ -5,14 +5,14 @@ namespace Walkies
 {
     public class Indexable
     {
-        public static object Rule(object root, string fragment)
+        public static object Rule(object parent, string fragment)
         {
-            if (!root.GetWalkable()) return null;
-            var indexer = root.GetType().GetProperty("Item");
+            if (parent.GetNotWalkable()) return null;
+            var indexer = parent.GetType().GetProperty("Item");
             var getter = indexer != null ? indexer.GetGetMethod(true) : null;
             if (getter != null)
             {
-                return getter.Invoke(root, new object[] {fragment});
+                return getter.Invoke(parent, new object[] {fragment});
             }
             return null;
         }

@@ -4,18 +4,18 @@ namespace Walkies
 {
     public static class WalkableExtension
     {
-        private static readonly ConditionalWeakTable<object, object> Walkables = new ConditionalWeakTable<object, object>();
+        private static readonly ConditionalWeakTable<object, object> NotWalkableLookup = new ConditionalWeakTable<object, object>();
 
-        public static T SetWalkable<T>(this T obj, bool Walkable)
+        public static T SetNotWalkable<T>(this T obj, bool notWalkable)
         {
-            Walkables.Remove(obj);
-            Walkables.Add(obj, Walkable);
+            NotWalkableLookup.Remove(obj);
+            NotWalkableLookup.Add(obj, notWalkable);
             return obj;
         }
 
-        public static bool GetWalkable(this object obj)
+        public static bool GetNotWalkable(this object obj)
         {
-            return Walkables.GetValue(obj, c => null as object) as bool? ?? default(bool);
+            return NotWalkableLookup.GetValue(obj, c => null as object) as bool? ?? default(bool);
         }
 
     }

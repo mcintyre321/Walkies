@@ -16,29 +16,35 @@ namespace Walkies
             _name = name;
         }
 
-        private delegate object Getter(object target);
-        static ConcurrentDictionary<Type, ConcurrentDictionary<string, Getter>> lookup = new ConcurrentDictionary<Type,ConcurrentDictionary<string,Getter>>(); 
+        private delegate object Getter(object target, bool walkable, MethodInfo getter);
+        static ConcurrentDictionary<Type, ConcurrentDictionary<string, Tuple<bool, MethodInfo, Getter>>> lookup = new ConcurrentDictionary<Type, ConcurrentDictionary<string, Tuple<bool, MethodInfo, Getter>>>(); 
         public static object Rule(object root, string fragment)
         {
             var innerLookup = GetLookupDictionary(root);
-            Getter getter = null;
-            return innerLookup.TryGetValue(fragment, out getter) ? getter(root) : null;
+            Tuple<bool, MethodInfo, Getter> getter = null;
+            return innerLookup.TryGetValue(fragment, out getter) ? getter.Item3(root, getter.Item1, getter.Item2) : null;
         }
         public static IEnumerable<Tuple<string, object>> ChildrenRule(object root)
         {
-            if (root.GetWalkable())
+            if (root.GetNotWalkable() == false)
             {
-                return GetLookupDictionary(root).Select(pair => Tuple.Create(pair.Key, pair.Value(root)));
+                    foreach(var item in GetLookupDictionary(root))
+                    {
+                        var fragment = item.Key;
+                        var getMethodInfo = item.Value.Item2;
+                        var walkable = item.Value.Item1;
+                        var getter = item.Value.Item3;
+                        yield return Tuple.Create(fragment, getter(root, walkable, getMethodInfo));
+                    }
             }
-            return null;
         }
 
-        private static ConcurrentDictionary<string, Getter> GetLookupDictionary(object root)
+        private static ConcurrentDictionary<string, Tuple<bool, MethodInfo, Getter>> GetLookupDictionary(object parent)
         {
-            var type = root.GetType();
+            var type = parent.GetType();
             var innerLookup = lookup.GetOrAdd(type, t =>
             {
-                var cd = new ConcurrentDictionary<string, Getter>(StringComparer.InvariantCultureIgnoreCase);
+                var cd = new ConcurrentDictionary<string, Tuple<bool, MethodInfo, Getter>>(StringComparer.InvariantCultureIgnoreCase);
                 foreach (var tuple in MakeFunc(type))
                 {
                     cd[tuple.Item1] = tuple.Item2;
@@ -49,22 +55,29 @@ namespace Walkies
         }
 
 
-        static IEnumerable<Tuple<string, Getter>> MakeFunc(Type type)
+        static IEnumerable<Tuple<string, Tuple<bool, MethodInfo, Getter>>> MakeFunc(Type type)
         {
-            return
-                from pi in type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                let att =
-                    pi.GetCustomAttributes(typeof (ChildAttribute), true).Cast<ChildAttribute>().SingleOrDefault()
-                where att != null
-                let getMethod = pi.GetGetMethod()
-                where getMethod != null
-                select Tuple.Create(att._name ?? pi.Name, new Getter(obj => Invoke(obj, getMethod, att.Walkable)));
+            foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+            {
+                ChildAttribute att = pi.GetCustomAttributes(typeof (ChildAttribute), true).Cast<ChildAttribute>().SingleOrDefault();
+                if (att != null)
+                {
+                    MethodInfo getMethod = pi.GetGetMethod();
+                    if (getMethod != null)
+                    {
+                        var walkable = att.Walkable;
+                        var item1 = att._name ?? pi.Name;
+                        var getter = new Getter((obj, w, mi) => Invoke(obj, mi, w));
+                        yield return Tuple.Create(item1, Tuple.Create(walkable, getMethod, getter));
+                    }
+                }
+            }
         }
 
         private static object Invoke(object obj, MethodInfo getMethod, bool walkable)
         {
             var result = getMethod.Invoke(obj, null);
-            if (result != null && walkable) result.SetWalkable(true);
+            if (result != null && !walkable) result.SetNotWalkable(true);
             return result;
         }
     }
