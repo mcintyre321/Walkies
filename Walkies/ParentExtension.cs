@@ -40,6 +40,14 @@ namespace Walkies
 
     internal static class ParentExtension
     {
+        static ParentExtension()
+        {
+            GetParentFunc = obj =>
+            {
+                var value = parents.GetValue(obj, k => () => null);
+                return value();
+            };
+        }
         private static readonly ConditionalWeakTable<object, Func<object>> parents = new ConditionalWeakTable<object, Func<object>>();
 
         internal static T SetParent<T>(this T obj, object parent) { return SetParent(obj, () => parent); }
@@ -56,10 +64,11 @@ namespace Walkies
             return obj;
         }
 
+        public static Func<object, object> GetParentFunc { get; set; }
         public static object GetParent(this object obj)
         {
-            var value = parents.GetValue(obj, k => () => null);
-            return value();
+             
+            return GetParentFunc(obj);
         }
     }
 }
