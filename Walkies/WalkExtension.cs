@@ -22,7 +22,7 @@ namespace Walkies
         private static object ScanChildrenEnumerables(object parent, string fragment)
         {
             return GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[]{})
-                .Select(pair => new {IsMatch = pair.Item1 == fragment, Pair = pair})
+                .Select(pair => new {IsMatch = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Item1, fragment) == 0, Pair = pair})
                 .Where(triple => triple.IsMatch)
                 .Select(triple => triple.Pair.Item2)
                 .FirstOrDefault();
