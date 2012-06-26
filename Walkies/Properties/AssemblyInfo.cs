@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Walkies")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Library for walking an object tree as if it were a DOM")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("Walkies")]
