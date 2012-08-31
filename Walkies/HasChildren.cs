@@ -6,19 +6,33 @@ namespace Walkies
 {
     public interface IHasChildren
     {
-        IEnumerable<object> Children{ get; }
+        IEnumerable<object> Children { get; }
+    }
+
+    class EmptyHasChildren : IHasChildren, IHasNamedChildren
+    {
+        public IEnumerable<object> Children
+        {
+            get { yield break; }
+        }
+
+        IEnumerable<Tuple<string, object>> IHasNamedChildren.Children
+        {
+            get { yield break; }
+        }
+    }
+
+    public interface IHasNamedChildren
+    {
+        IEnumerable<Tuple<string, object>> Children { get; }
     }
 
     public class HasChildren
     {
         public static IEnumerable<Tuple<string, object>> Rule(object root)
         {
-            var hasChildren = root as IHasChildren;
-            if (hasChildren != null)
-            {
-                return hasChildren.Children.Select(c => Tuple.Create(c.GetFragment(), c));
-            }
-            return null;
+            return (root as IHasChildren ?? new EmptyHasChildren()).Children.Select(c => Tuple.Create(c.GetFragment(), c))
+                .Concat((root as IHasNamedChildren ?? new EmptyHasChildren()).Children);
         }
     }
 }
