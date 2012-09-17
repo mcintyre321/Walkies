@@ -38,12 +38,23 @@ namespace Walkies
         }
     }
 
-    public  static class ParentExtension
+    public static class ParentExtension
     {
+
         static ParentExtension()
         {
             GetParentFunc = obj =>
             {
+                var hasParent = obj as IHasParent;
+                if (hasParent != null)
+                {
+                    return hasParent.Parent;
+                }
+                var attributedMember = AttributeLookupCache<ParentAttribute>.Member(obj.GetType());
+                if (attributedMember != null)
+                {
+                    return attributedMember.GetValue(obj);
+                }
                 var value = parents.GetValue(obj, k => () => null);
                 return value();
             };
@@ -67,7 +78,6 @@ namespace Walkies
         public static Func<object, object> GetParentFunc { get; set; }
         internal static object GetParent(this object obj)
         {
-             
             return GetParentFunc(obj);
         }
     }
