@@ -25,7 +25,7 @@ namespace Walkies
         {
             var members = lookup.GetOrAdd(type, t => t
                 .GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(p => Attribute.GetCustomAttribute(p, typeof(TAttribute), true) != null));
+                .Where(p => Attribute.GetCustomAttribute(p, typeof(TAttribute), true) != null).ToArray());
             return members;
         }
 
