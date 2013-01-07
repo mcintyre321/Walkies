@@ -61,7 +61,7 @@ namespace Walkies.Tests
             Assert.AreEqual(a.Objects, a.Walk("objects").Last());
 
             Assert.AreEqual(a.B, a.Walk("objects/B").Last());
-            Assert.AreEqual("objects/B", a.B.WalkedPath("/"));
+            Assert.That("objects/B", Is.EqualTo(a.B.WalkedPath("/")).IgnoreCase);
             
             Assert.AreEqual(a.C, a.Walk("objects/C").Last());
 

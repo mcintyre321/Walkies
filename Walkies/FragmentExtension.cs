@@ -39,7 +39,7 @@ namespace Walkies
             var parent = obj.GetParent();
             if (parent != null)
             {
-                var children = obj.KnownChildrenWithFragments();
+                var children = parent.KnownChildrenWithFragments();
                 if (children != null)
                 {
                     var child = children.FirstOrDefault(c => c.Item2 == obj);
