@@ -49,7 +49,10 @@ namespace Walkies
         {
             return descendant.AncestorsAndSelf().Reverse();
         } 
-
+        public static T Closest<T>(this object document)
+        {
+            return document.Ancestors().OfType<T>().FirstOrDefault();
+        }
 
         public static IEnumerable<T> Each<T>(this IEnumerable<T> items, Action<T> action)
         {
