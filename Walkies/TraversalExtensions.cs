@@ -9,12 +9,18 @@ namespace Walkies
     {
         public static IEnumerable<object> KnownChildren(this object parent)
         {
-            return WalkExtension.GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[] { })
+            return parent.KnownChildrenWithFragments()
                 .Select(pair => pair.Item2);
         }
         public static IEnumerable<Tuple<string, object>> KnownChildrenWithFragments(this object parent)
         {
-            return WalkExtension.GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[] {});
+            return WalkExtension.GetChildrenRules
+                .SelectMany(r => r(parent) ?? new Tuple<string, object>[] {})
+                .Select(pair =>
+                {
+                    pair.Item2.SetFragment(pair.Item1);
+                    return pair;
+                });
         }
 
         public static IEnumerable<object> KnownDescendants(this object parent)
