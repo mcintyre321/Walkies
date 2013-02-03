@@ -43,10 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="A.cs" />
+    <Compile Include="HasChildrenInterfaceTests.cs" />
     <Compile Include="IndexableWalkTests.cs" />
     <Compile Include="EnumerableWalkTests.cs" />
-    <Compile Include="SimpleWalkTests.cs" />
+    <Compile Include="AttributedWalkingTests.cs" />
+    <Compile Include="InterfaceWalkingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
