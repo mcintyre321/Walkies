@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChildrenAttributeTests.cs" />
     <Compile Include="HasChildrenInterfaceTests.cs" />
     <Compile Include="IndexableWalkTests.cs" />
     <Compile Include="EnumerableWalkTests.cs" />

@@ -40,6 +40,7 @@ namespace Walkies
 
         public static List<GetChildren> GetChildrenRules = new List<GetChildren>()
         {
+            ChildrenAttribute.ChildrenRule,
             HasChildren.Rule,
             ChildAttribute.ChildrenRule,
             ScanEnumerable.ChildrenRule,
