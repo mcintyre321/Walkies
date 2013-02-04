@@ -33,7 +33,23 @@ namespace Walkies.Tests
             var knownChild = parent.KnownChildrenWithFragments().Single();
             Assert.AreEqual("SomeChild", knownChild.Item1);
             Assert.AreEqual(parent.SomeChild, knownChild.Item2);
-
         }
+
+        [Test]
+        public void AttributedPropertiesHaveCorrectParent()
+        {
+            var parent = new ObjectWithAttributedChild();
+            var knownChild = parent.KnownChildrenWithFragments().Single();
+            Assert.AreEqual(parent, knownChild.Item2.Parent());
+        }
+        [Test]
+        public void WalkedAttributedPropertiesHaveCorrectParent()
+        {
+            var parent = new ObjectWithAttributedChild();
+            var child = parent.WalkTo("SomeChild");
+            Assert.AreEqual(parent, child.Parent());
+        }
+
+
     }
 }
