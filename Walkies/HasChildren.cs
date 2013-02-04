@@ -34,6 +34,7 @@ namespace Walkies
             return (root as IHasChildren ?? new EmptyHasChildren()).Children.Select(c =>
             {
                 c.Item2.SetFragment(c.Item1);
+                c.Item2.SetParent(root);
                 return c;
             }).Concat((root as IHasNamedChildren ?? new EmptyHasChildren()).Children);
         }

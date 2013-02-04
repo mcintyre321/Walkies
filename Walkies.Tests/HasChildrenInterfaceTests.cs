@@ -26,21 +26,35 @@ namespace Walkies.Tests
         }
 
         [Test]
-        public void AttributedPropertyCanBeWalkedToByPropertyName()
+        public void CanBeWalkedToByName()
         {
             var parent = new HasChildren();
             var child = parent.Walk("SomeChild").Last();
             Assert.AreEqual(parent.SomeChild, child);
         }
 
-        ///// <summary>
-        ///// Children referenced via IGetChild are not KnownChildren as they cannot be statically found
-        ///// </summary>
-        //[Test]
-        //public void InterfacedChildrenAreNotKnown()
-        //{
-        //    var p = new HasChildren();
-        //    Assert.IsEmpty(p.KnownChildren());
-        //}
+        /// <summary>
+        /// Children referenced via IGetChild are not KnownChildren as they cannot be statically found
+        /// </summary>
+        [Test]
+        public void ChildrenAreKnownChildren()
+        {
+            var p = new HasChildren().KnownChildrenWithFragments().Single();
+        }
+
+        [Test]
+        public void PropertiesHaveCorrectParent()
+        {
+            var parent = new HasChildren();
+            var knownChild = parent.KnownChildrenWithFragments().Single();
+            Assert.AreEqual(parent, knownChild.Item2.Parent());
+        }
+        [Test]
+        public void WalkedPropertiesHaveCorrectParent()
+        {
+            var parent = new HasChildren();
+            var child = parent.WalkTo("SomeChild");
+            Assert.AreEqual(parent, child.Parent());
+        }
     }
 }
