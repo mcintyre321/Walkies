@@ -36,11 +36,11 @@ namespace Walkies.Tests
                 get { return InnerObjects; }
             }
 
-            [Child]
-            public Hashtable Objects2
-            {
-                get { return InnerObjects2; }
-            }
+            //[Child]
+            //public Hashtable Objects2
+            //{
+            //    get { return InnerObjects2; }
+            //}
 
 
 
@@ -66,17 +66,17 @@ namespace Walkies.Tests
             Assert.AreEqual(a.C, a.Walk("objects/C").Last());
 
         }
-        [Test]
-        public void CannotWalkUnwalkableEnumerable()
-        {
-            var a = new TestSubject();
-            Assert.AreEqual(a.Objects2, a.Walk("objects2").Last());
+        //[Test]
+        //public void CannotWalkUnwalkableEnumerable()
+        //{
+        //    var a = new TestSubject();
+        //    Assert.AreEqual(a.Objects2, a.Walk("objects2").Last());
 
-            Assert.AreEqual(null, a.Walk("objects2/B").Last());
-            Assert.AreEqual(null, a.Walk("objects2/E").Last());
-            Assert.AreEqual(null, a.Walk("objects2/5").Last());
+        //    Assert.AreEqual(null, a.Walk("objects2/B").Last());
+        //    Assert.AreEqual(null, a.Walk("objects2/E").Last());
+        //    Assert.AreEqual(null, a.Walk("objects2/5").Last());
 
-        }
+        //}
 
     }
 }

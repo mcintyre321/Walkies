@@ -25,16 +25,16 @@ namespace Walkies.Tests
 
           
 
-            [Child]
-            public IEnumerable<object> Objects2
-            {
-                get
-                {
-                    yield return B;
-                    yield return C;
-                    yield return D;
-                }
-            }
+            //[Child]
+            //public IEnumerable<object> Objects2
+            //{
+            //    get
+            //    {
+            //        yield return B;
+            //        yield return C;
+            //        yield return D;
+            //    }
+            //}
 
             [Child(Walkable = true)]
             public IEnumerable<object> Objects
@@ -62,19 +62,20 @@ namespace Walkies.Tests
             Assert.AreEqual("objects/1", a.C.WalkedPath("/"));
             
             Assert.AreEqual(null, a.Walk("objects/5").Last());
-
         }
-        [Test]
-        public void CannotWalkUnwalkableEnumerable()
-        {
-            var a = new TestSubject();
-            Assert.AreEqual(a.Objects2, a.Walk("objects2").Last());
 
-            Assert.AreEqual(null, a.Walk("objects2/0").Last());
-            Assert.AreEqual(null, a.Walk("objects2/1").Last());
-            Assert.AreEqual(null, a.Walk("objects2/5").Last());
+        //[Test]
+        //public void CannotWalkUnwalkableEnumerable()
+        //{
+        //    var a = new TestSubject();
+        //    Assert.AreEqual(a.Objects2, a.Walk("objects2").Last());
 
-        }
+        //    Assert.AreEqual(null, a.Walk("objects2/0").Last());
+        //    Assert.AreEqual(null, a.Walk("objects2/1").Last());
+        //    Assert.AreEqual(null, a.Walk("objects2/5").Last());
+
+        //}
+
 
     }
 }

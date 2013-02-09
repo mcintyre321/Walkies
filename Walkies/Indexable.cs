@@ -7,7 +7,7 @@ namespace Walkies
     {
         public static object Rule(object parent, string fragment)
         {
-            if (parent.GetNotWalkable()) return null;
+            //if (parent.GetNotWalkable()) return null;
             var indexer = parent.GetType().GetProperty("Item");
             var getter = indexer != null ? indexer.GetGetMethod(true) : null;
             if (getter != null)

@@ -26,7 +26,7 @@ namespace Walkies
         }
         public static IEnumerable<Tuple<string, object>> ChildrenRule(object root)
         {
-            if (root.GetNotWalkable() == false)
+            if (true /*root.GetNotWalkable() == false*/)
             {
                     foreach(var item in GetLookupDictionary(root))
                     {
@@ -77,7 +77,7 @@ namespace Walkies
         private static object Invoke(object obj, MethodInfo getMethod, bool walkable)
         {
             var result = getMethod.Invoke(obj, null);
-            if (result != null && !walkable) result.SetNotWalkable(true);
+            /*if (result != null && !walkable) result.SetNotWalkable(true);*/
             return result;
         }
     }

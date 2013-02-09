@@ -21,7 +21,7 @@ namespace Walkies
 
         private static object ScanChildrenEnumerables(object parent, string fragment)
         {
-            if (!parent.GetNotWalkable())
+            if (true/*!parent.GetNotWalkable()*/)
             {
                 return GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[] {})
                     .Select(
