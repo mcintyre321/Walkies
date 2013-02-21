@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Walkies
 {
+    public class FragmentAttribute
+    {
+    }
+
     public static class FragmentExtension
     {
         static FragmentExtension()
@@ -27,11 +32,25 @@ namespace Walkies
         }
 
         public static Func<object, string> GetFragmentFromWeakTableRule { get; set; }
-        
-        
+
+
         public static string GetFragment(this object obj)
         {
-            return GetFragmentFromWeakTableRule(obj) ?? GetFragmentFromParent(obj);
+            return GetFragmentFromWeakTableRule(obj)
+                ?? GetFragmentFromAttribute(obj)
+                   ?? GetFragmentFromParent(obj);
+        }
+
+        static ConcurrentDictionary<Type, Func<Object, String>> lookup = new ConcurrentDictionary<Type, Func<object, string>>();
+        private static string GetFragmentFromAttribute(object obj)
+        {
+            var func = lookup.GetOrAdd(obj.GetType(), o =>
+                o.GetType().GetProperties()
+                .Where(p => p.GetCustomAttributes(typeof(FragmentAttribute), true).Any())
+                .Select(p => new Func<Object, String>(target => p.GetValue(target).ToString()))
+                .SingleOrDefault()
+            );
+            return func == null ? null : func(obj);
         }
 
         private static string GetFragmentFromParent(object obj)
