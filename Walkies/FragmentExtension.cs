@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace Walkies
 {
-    public class FragmentAttribute
+    public class FragmentAttribute : Attribute
     {
     }
 
