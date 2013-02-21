@@ -44,8 +44,8 @@ namespace Walkies
         static ConcurrentDictionary<Type, Func<Object, String>> lookup = new ConcurrentDictionary<Type, Func<object, string>>();
         private static string GetFragmentFromAttribute(object obj)
         {
-            var func = lookup.GetOrAdd(obj.GetType(), o =>
-                o.GetType().GetProperties()
+            var func = lookup.GetOrAdd(obj.GetType(), type =>
+                type.GetProperties()
                 .Where(p => p.GetCustomAttributes(typeof(FragmentAttribute), true).Any())
                 .Select(p => new Func<Object, String>(target => p.GetValue(target).ToString()))
                 .SingleOrDefault()
