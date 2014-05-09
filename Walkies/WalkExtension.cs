@@ -57,7 +57,13 @@ namespace Walkies
             var current = parent;
             foreach (var fragment in path)
             {
-                current = current.Child(fragment);
+                var child = current.Child(fragment);
+                foreach (var rule in OnWalkRules.Rules)
+                {
+                    child = (rule(current, fragment, child)) ?? child;
+                }
+                current = child;
+                
                 yield return current;
             }
         }
