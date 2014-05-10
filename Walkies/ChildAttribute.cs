@@ -34,7 +34,7 @@ namespace Walkies
                         var getMethodInfo = item.Value.Item2;
                         var walkable = item.Value.Item1;
                         var getter = item.Value.Item3;
-                        yield return Tuple.Create(fragment, getter(root, walkable, getMethodInfo).SetParent(root));
+                        yield return Tuple.Create(fragment, getter(root, walkable, getMethodInfo));
                     }
             }
         }

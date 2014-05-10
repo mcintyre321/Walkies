@@ -15,7 +15,7 @@ namespace Walkies
             GetChild.Rule,
             ScanChildrenEnumerables,
             ChildAttribute.Rule, 
-            ScanEnumerable.Rule,
+            //ScanEnumerable.Rule,
             Indexable.Rule
         };
 
@@ -43,7 +43,7 @@ namespace Walkies
             ChildrenAttribute.ChildrenRule,
             HasChildren.Rule,
             ChildAttribute.ChildrenRule,
-            ScanEnumerable.ChildrenRule,
+           // ScanEnumerable.ChildrenRule,
         };
 
         public static IEnumerable<object> Walk(this object parent, string path)
@@ -58,10 +58,7 @@ namespace Walkies
             foreach (var fragment in path)
             {
                 var child = current.Child(fragment);
-                foreach (var rule in OnWalkRules.Rules)
-                {
-                    child = (rule(current, fragment, child)) ?? child;
-                }
+               
                 current = child;
                 
                 yield return current;
@@ -90,7 +87,7 @@ namespace Walkies
 
 
 
-        public static object Child(this object parent, string fragment)
+        static object Child(this object parent, string fragment)
         {
             if (parent == null) return null;
             var child = Rules.Select(r => r(parent, fragment)).FirstOrDefault(v => v != null);
@@ -98,6 +95,10 @@ namespace Walkies
             {
                 return null;
             }
+            //foreach (var rule in OnWalkRules.Rules)
+            //{
+            //    child = (rule(current, fragment, child)) ?? child;
+            //}
             if (child.GetParent() == null) child.SetParent(parent);
             if (child.GetFragment() == null) child.SetFragment(fragment);
             return child;

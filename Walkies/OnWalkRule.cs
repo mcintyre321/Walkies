@@ -18,7 +18,7 @@ namespace Walkies
             {
                 return ((IHandlesOnWalk) child).OnWalk(parent, fragment);
             }
-            return null;
+            return child;
         };
     }
 
