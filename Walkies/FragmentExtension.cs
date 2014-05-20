@@ -38,7 +38,13 @@ namespace Walkies
         {
             return GetFragmentFromWeakTableRule(obj)
                 ?? GetFragmentFromAttribute(obj)
-                   ?? GetFragmentFromParent(obj);
+                   ?? GetFragmentFromParent(obj)
+                   ?? GetFragmentFromTypeName(obj);
+        }
+
+        private static string GetFragmentFromTypeName(object o)
+        {
+            return o.GetType().Name;
         }
 
         static ConcurrentDictionary<Type, Func<Object, String>> lookup = new ConcurrentDictionary<Type, Func<object, string>>();
