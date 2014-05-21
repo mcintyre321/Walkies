@@ -54,10 +54,14 @@ namespace Walkies
         public static IEnumerable<object> Walked(this object descendant)
         {
             return descendant.AncestorsAndSelf().Reverse();
-        } 
-        public static T Closest<T>(this object document)
+        }
+        public static T ClosestAncestor<T>(this object document)
         {
             return document.Ancestors().OfType<T>().FirstOrDefault();
+        }
+        public static T Closest<T>(this object document)
+        {
+            return document.AncestorsAndSelf().OfType<T>().FirstOrDefault();
         }
 
         public static IEnumerable<T> Each<T>(this IEnumerable<T> items, Action<T> action)

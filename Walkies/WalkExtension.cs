@@ -13,37 +13,37 @@ namespace Walkies
         public static List<GetChildRule> Rules = new List<GetChildRule>()
         {
             GetChild.Rule,
-            ScanChildrenEnumerables,
+            //ScanChildrenEnumerables,
             ChildAttribute.Rule, 
-            ScanEnumerable.Rule,
+            //ScanEnumerable.Rule,
             Indexable.Rule
         };
 
-        private static object ScanChildrenEnumerables(object parent, string fragment)
-        {
-            if (true/*!parent.GetNotWalkable()*/)
-            {
-                return GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[] {})
-                    .Select(
-                            pair =>
-                            new
-                            {
-                                IsMatch = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Item1, fragment) == 0,
-                                Pair = pair
-                            })
-                    .Where(triple => triple.IsMatch)
-                    .Select(triple => triple.Pair.Item2)
-                    .FirstOrDefault();
-            }
-            return null;
-        }
+        //private static object ScanChildrenEnumerables(object parent, string fragment)
+        //{
+        //    if (true/*!parent.GetNotWalkable()*/)
+        //    {
+        //        return GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[] {})
+        //            .Select(
+        //                    pair =>
+        //                    new
+        //                    {
+        //                        IsMatch = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Item1, fragment) == 0,
+        //                        Pair = pair
+        //                    })
+        //            .Where(triple => triple.IsMatch)
+        //            .Select(triple => triple.Pair.Item2)
+        //            .FirstOrDefault();
+        //    }
+        //    return null;
+        //}
 
         public static List<GetChildren> GetChildrenRules = new List<GetChildren>()
         {
             ChildrenAttribute.ChildrenRule,
             HasChildren.Rule,
             ChildAttribute.ChildrenRule,
-            ScanEnumerable.ChildrenRule,
+           // ScanEnumerable.ChildrenRule,
         };
 
         public static IEnumerable<object> Walk(this object parent, string path)
@@ -57,7 +57,10 @@ namespace Walkies
             var current = parent;
             foreach (var fragment in path)
             {
-                current = current.Child(fragment);
+                var child = current.Child(fragment);
+               
+                current = child;
+                
                 yield return current;
             }
         }
@@ -84,7 +87,7 @@ namespace Walkies
 
 
 
-        public static object Child(this object parent, string fragment)
+        static object Child(this object parent, string fragment)
         {
             if (parent == null) return null;
             var child = Rules.Select(r => r(parent, fragment)).FirstOrDefault(v => v != null);
@@ -92,6 +95,10 @@ namespace Walkies
             {
                 return null;
             }
+            //foreach (var rule in OnWalkRules.Rules)
+            //{
+            //    child = (rule(current, fragment, child)) ?? child;
+            //}
             if (child.GetParent() == null) child.SetParent(parent);
             if (child.GetFragment() == null) child.SetFragment(fragment);
             return child;
