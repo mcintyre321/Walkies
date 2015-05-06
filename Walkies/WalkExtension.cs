@@ -13,30 +13,30 @@ namespace Walkies
         public static List<GetChildRule> Rules = new List<GetChildRule>()
         {
             GetChild.Rule,
-            //ScanChildrenEnumerables,
+            ScanChildrenEnumerables,
             ChildAttribute.Rule, 
             //ScanEnumerable.Rule,
             Indexable.Rule
         };
 
-        //private static object ScanChildrenEnumerables(object parent, string fragment)
-        //{
-        //    if (true/*!parent.GetNotWalkable()*/)
-        //    {
-        //        return GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[] {})
-        //            .Select(
-        //                    pair =>
-        //                    new
-        //                    {
-        //                        IsMatch = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Item1, fragment) == 0,
-        //                        Pair = pair
-        //                    })
-        //            .Where(triple => triple.IsMatch)
-        //            .Select(triple => triple.Pair.Item2)
-        //            .FirstOrDefault();
-        //    }
-        //    return null;
-        //}
+        private static object ScanChildrenEnumerables(object parent, string fragment)
+        {
+            if (true/*!parent.GetNotWalkable()*/)
+            {
+                return GetChildrenRules.SelectMany(r => r(parent) ?? new Tuple<string, object>[] { })
+                    .Select(
+                            pair =>
+                            new
+                            {
+                                IsMatch = StringComparer.InvariantCultureIgnoreCase.Compare(pair.Item1, fragment) == 0,
+                                Pair = pair
+                            })
+                    .Where(triple => triple.IsMatch)
+                    .Select(triple => triple.Pair.Item2)
+                    .FirstOrDefault();
+            }
+            return null;
+        }
 
         public static List<GetChildren> GetChildrenRules = new List<GetChildren>()
         {
